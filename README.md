@@ -5,3 +5,9 @@ This repository is used as an minimal example of using the [Cake build system](h
 You can read more in the Cake [Getting Started guide](https://cakebuild.net/docs/tutorials/getting-started).
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/dfi1xib48d9diiac?svg=true)](https://ci.appveyor.com/project/cakebuild/example)
+
+
+using the build.bat you can call the script in windows using this 
+
+`build -target clean -verbosity diagnostic -whatif -SkipToolPackageRestore -configuration debug`
+
