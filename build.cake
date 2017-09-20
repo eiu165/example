@@ -1,4 +1,5 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#load "local:?path=tools/cakeAddIns/RunSimultaneously.cake"
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -16,6 +17,51 @@ var buildDir = Directory("./src/Example/bin") + Directory(configuration);
 //////////////////////////////////////////////////////////////////////
 // TASKS
 //////////////////////////////////////////////////////////////////////
+Task("a")
+.Does(() => 
+{
+    RunSimultaneously(
+    () =>
+    {
+        var stopWatch = new System.Diagnostics.Stopwatch();
+        stopWatch.Start(); 
+        Warning("START 1");
+        Thread.Sleep(3000);
+        stopWatch.Stop();
+        long duration = stopWatch.ElapsedMilliseconds;
+        Warning("FINISHED 1 took:" + duration);
+    },
+    () =>
+    {
+        RunSimultaneously(() =>
+        {
+            var stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start(); 
+            Warning("START 2");
+            Thread.Sleep(1000);
+            Warning("FINISHED 2");
+            long duration = stopWatch.ElapsedMilliseconds;
+            Warning("FINISHED 1 took:" + duration);
+        },
+        () =>
+        {
+            var stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
+            Warning("START 3");
+            Thread.Sleep(1000);
+            long duration = stopWatch.ElapsedMilliseconds;
+            Warning("FINISHED 3" + duration);
+            stopWatch.Start();
+            Warning("START 4");
+            Thread.Sleep(1000); 
+            duration = stopWatch.ElapsedMilliseconds;
+            Warning("FINISHED 4 took:" + duration);
+        });
+    }
+    );
+});
+
+
 
 Task("Clean")
     .Does(() =>
