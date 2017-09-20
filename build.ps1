@@ -81,6 +81,18 @@ function MD5HashFile([string] $filePath)
 }
 
 Write-Host "Preparing to run build script..."
+  
+Write-Host "CAKE_EXE: $CAKE_EXE "
+Write-Host "Script: $Script "
+Write-Host "Target: $Target " 
+Write-Host "Configuration: $Configuration " 
+Write-Host "Verbosity: $Verbosity " 
+Write-Host "Experimental: $Experimental " 
+Write-Host "WhatIf: $WhatIf " 
+Write-Host "Mono: $Mono "  
+Write-Host "SkipToolPackageRestore: $SkipToolPackageRestore " 
+Write-Host "ScriptArgs: $ScriptArgs "   
+
 
 if(!$PSScriptRoot){
     $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
