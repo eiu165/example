@@ -19,17 +19,17 @@ var buildDir = Directory("./src/Example/bin") + Directory(configuration);
 //////////////////////////////////////////////////////////////////////
 Task("a")
 .Does(() => 
-{
+{ 
     RunSimultaneously(
     () =>
     {
         var stopWatch = new System.Diagnostics.Stopwatch();
         stopWatch.Start(); 
-        Warning("START 1");
-        Thread.Sleep(3000);
+        Verbose(logAction=>logAction("Hello {0}! Today is an {1:dddd}", "World", DateTime.Now));
+        Thread.Sleep(1000);
         stopWatch.Stop();
         long duration = stopWatch.ElapsedMilliseconds;
-        Warning("FINISHED 1 took:" + duration);
+        Verbose("FINISHED 1 took:{0} " , duration   );
     },
     () =>
     {
@@ -37,28 +37,29 @@ Task("a")
         {
             var stopWatch = new System.Diagnostics.Stopwatch();
             stopWatch.Start(); 
-            Warning("START 2");
+            Verbose("START 2");
             Thread.Sleep(1000);
-            Warning("FINISHED 2");
+            Verbose("FINISHED 2");
             long duration = stopWatch.ElapsedMilliseconds;
-            Warning("FINISHED 1 took:" + duration);
+            Verbose("FINISHED 2 took:" + duration);
         },
         () =>
         {
             var stopWatch = new System.Diagnostics.Stopwatch();
             stopWatch.Start();
-            Warning("START 3");
-            Thread.Sleep(1000);
-            long duration = stopWatch.ElapsedMilliseconds;
-            Warning("FINISHED 3" + duration);
-            stopWatch.Start();
-            Warning("START 4");
-            Thread.Sleep(1000); 
-            duration = stopWatch.ElapsedMilliseconds;
-            Warning("FINISHED 4 took:" + duration);
+            Verbose("START 4");
+            RunTarget("B");
+            Verbose("FINISHED 4 took:" + stopWatch.ElapsedMilliseconds);
         });
     }
     );
+});
+
+
+Task("B")
+    .Does(() =>
+{ 
+     Thread.Sleep(1000);   
 });
 
 
